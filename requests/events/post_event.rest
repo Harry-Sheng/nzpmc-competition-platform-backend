@@ -1,0 +1,7 @@
+POST http://localhost:3001/api/events
+Content-Type: application/json
+
+{ 
+    "name": "event 1 ",
+    "description": "happy"
+}
