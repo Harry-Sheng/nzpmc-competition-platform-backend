@@ -1,0 +1,16 @@
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{ 
+    "email": "harry@gmail",
+    "password": "187729"
+}
+
+### Invalid
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{ 
+    "email": "invalid",
+    "password": "187729"
+}
