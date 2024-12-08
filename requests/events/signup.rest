@@ -1,33 +1,9 @@
-### Test: User Signs Up for an Event (Replace with valid IDs)
+### Test: User Signs Up for an Event
 PUT http://localhost:3001/api/events/6754d43bc15e114b3e774d45/signup
 Content-Type: application/json
-
-{
-    "userId": "6754cc1dd9942d27453885f0"
-}
-
-###
-
-### Test: Fetch All Events
-GET http://localhost:3001/api/events
-Content-Type: application/json
-
-###
-
-### Test: Error Case - Invalid User ID
-PUT http://localhost:3001/api/events/6754d43bc15e114b3e774d45/signup
-Content-Type: application/json
-
-{
-    "userId": "6754cc1dd9942d27453885f1"
-}
-
-###
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhcnJ5QGdtYWlsIiwiaWQiOiI2NzU0Y2MxZGQ5OTQyZDI3NDUzODg1ZjAiLCJpYXQiOjE3MzM2Mjg5NTl9.M6F-04y8Kf6a1y78I9B3869K009Bv4horMYtwrVRfPk
 
 ### Test: Error Case - Invalid Event ID
 PUT http://localhost:3001/api/events/6754d43bc15e114b3e774d49/signup
 Content-Type: application/json
-
-{
-    "userId": "6754cc1dd9942d27453885f0"
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhcnJ5QGdtYWlsIiwiaWQiOiI2NzU0Y2MxZGQ5OTQyZDI3NDUzODg1ZjAiLCJpYXQiOjE3MzM2Mjg5NTl9.M6F-04y8Kf6a1y78I9B3869K009Bv4horMYtwrVRfPk
