@@ -1,0 +1,33 @@
+### Test: User Signs Up for an Event (Replace with valid IDs)
+PUT http://localhost:3001/api/events/6754d43bc15e114b3e774d45/signup
+Content-Type: application/json
+
+{
+    "userId": "6754cc1dd9942d27453885f0"
+}
+
+###
+
+### Test: Fetch All Events
+GET http://localhost:3001/api/events
+Content-Type: application/json
+
+###
+
+### Test: Error Case - Invalid User ID
+PUT http://localhost:3001/api/events/6754d43bc15e114b3e774d45/signup
+Content-Type: application/json
+
+{
+    "userId": "6754cc1dd9942d27453885f1"
+}
+
+###
+
+### Test: Error Case - Invalid Event ID
+PUT http://localhost:3001/api/events/6754d43bc15e114b3e774d49/signup
+Content-Type: application/json
+
+{
+    "userId": "6754cc1dd9942d27453885f0"
+}
