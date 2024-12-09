@@ -9,11 +9,12 @@ eventsRouter.get('/', async (request, response) => {
 })
 
 eventsRouter.post('/', async (request, response) => {
-  const { name, description} = request.body
+  const { name, description, date} = request.body
 
   const event = new Event({
     name,
     description,
+    date,
   })
 
   const savedEvent = await event.save()

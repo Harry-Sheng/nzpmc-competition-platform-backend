@@ -2,6 +2,7 @@ POST http://localhost:3001/api/events
 Content-Type: application/json
 
 { 
-    "name": "event 1 ",
-    "description": "happy"
+    "name": "NZPMC 2024 Round 3 ",
+    "description": "Round 3 of the NZPMC 2024",
+    "date":"13 Dec 2024, 7:30 pm"
 }
