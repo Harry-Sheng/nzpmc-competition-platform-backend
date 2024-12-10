@@ -9,6 +9,7 @@ const loginRouter = require("./controllers/login");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
+const path = require("path");
 
 mongoose.set("strictQuery", false);
 
@@ -31,6 +32,10 @@ app.use(middleware.requestLogger);
 app.use("/api/users", usersRouter);
 app.use("/api/events", eventsRouter);
 app.use("/api/login", loginRouter);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+});
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
