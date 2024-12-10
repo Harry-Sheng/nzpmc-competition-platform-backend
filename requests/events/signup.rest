@@ -1,7 +1,7 @@
 ### Test: User Signs Up for an Event
-PUT http://localhost:3001/api/events/6756b641bd266e5726eccacf/signup
+PUT http://localhost:3001/api/events/6756b64dbd266e5726eccad1/signup
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhcnJ5QGdtYWlsIiwiaWQiOiI2NzU0Y2MxZGQ5OTQyZDI3NDUzODg1ZjAiLCJpYXQiOjE3MzM3ODE0NTUsImV4cCI6MTczMzc4MTc1NX0.riKAoCQWuIDciU7AjtrTqUUcPKnUn_h2iY1y0jp20SA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhcnJ5QGdtYWlsIiwiaWQiOiI2NzU0Y2MxZGQ5OTQyZDI3NDUzODg1ZjAiLCJpYXQiOjE3MzM3OTQ4MjQsImV4cCI6MTczMzc5NTEyNH0.6R0AwskwDBQsg5J83-LWm9b11ro8_FPcDU6jjwGy6U0
 ### Test: Error Case - Invalid Event ID
 PUT http://localhost:3001/api/events/6754d43bc15e114b3e774d49/signup
 Content-Type: application/json
