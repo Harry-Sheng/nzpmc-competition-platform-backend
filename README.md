@@ -87,7 +87,16 @@ index.js
 - **index.js**:
   The main entry point that starts the server, listening on a specified port and connecting to the database if needed.
 
+- Separation of Concerns:
+  Splitting functionality into controllers, models, and utils ensures a clean architecture. Each layer has a distinct responsibility, making the codebase more maintainable and scalable.
+
 ### Extra Features
 
-- JWT for authentication
-- ReactBootstrap and css for better looking
+-JWT Authentication:
+Using JWT (JSON Web Token) is a straightforward and widely adopted method for handling user authentication in SPAs. It simplifies the token exchange process between frontend and backend, avoids storing sessions on the server, and integrates well with React Context for maintaining logged-in states.
+
+-React Context for Authentication:
+Context allows the authentication state to be easily accessed across components without manual prop passing. This streamlines user experience in scenarios like conditional rendering of navigation items, access to restricted pages, and form submissions that require authentication.
+
+-React Bootstrap and Minimal Custom CSS:
+React Bootstrap provides prebuilt, responsive components that adhere to modern UI/UX standards, reducing the need for custom styling from scratch.
