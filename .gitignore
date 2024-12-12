@@ -1,1 +1,10 @@
+# IDE-specific files
 .idea/
+*.iml
+*.ipr
+*.iws
+*.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
