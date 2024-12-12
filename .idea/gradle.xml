@@ -4,10 +4,11 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/SpringBoot-BackEnd" />
+        <option name="gradleJvm" value="17" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/SpringBoot-BackEnd" />
           </set>
         </option>
       </GradleProjectSettings>
