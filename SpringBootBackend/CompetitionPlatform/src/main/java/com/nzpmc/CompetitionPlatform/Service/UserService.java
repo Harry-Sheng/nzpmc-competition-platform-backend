@@ -9,8 +9,11 @@ import java.util.List;
 
 @Service
 public class UserService {
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
     public void saveUser(User user){
         userRepository.save(user);
     }
