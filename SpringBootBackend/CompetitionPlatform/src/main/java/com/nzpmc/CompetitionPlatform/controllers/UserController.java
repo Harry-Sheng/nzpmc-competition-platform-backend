@@ -1,7 +1,7 @@
 package com.nzpmc.CompetitionPlatform.controllers;
 
+import com.nzpmc.CompetitionPlatform.Service.UserService;
 import com.nzpmc.CompetitionPlatform.models.User;
-import com.nzpmc.CompetitionPlatform.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class UserController {
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -23,7 +23,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         // Check if user already exists
-        if (userRepository.existsById(user.getEmail())) {
+        if (userService.existsById(user.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body("Error: Email is already in use!");
@@ -33,14 +33,14 @@ public class UserController {
         user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
 
         // Save the user
-        userRepository.save(user);
+        userService.saveUser(user);
 
         return ResponseEntity.ok("User registered successfully!");
     }
 
     @GetMapping
     public ResponseEntity<Object> getUsers(){
-        List<User> users = userRepository.findAll();
+        List<User> users = userService.getAllUser();
         return ResponseEntity.ok(users);
     }
 }
