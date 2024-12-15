@@ -3,6 +3,7 @@ package com.nzpmc.CompetitionPlatform.controllers;
 import com.nzpmc.CompetitionPlatform.Service.JwtService;
 import com.nzpmc.CompetitionPlatform.Service.UserService;
 import com.nzpmc.CompetitionPlatform.dto.UpdateNameRequest;
+import com.nzpmc.CompetitionPlatform.dto.UserSignUpRequest;
 import com.nzpmc.CompetitionPlatform.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -13,9 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 
 public class UserController {
 
@@ -34,16 +34,22 @@ public class UserController {
 
     //User register
     @PostMapping
-    public ResponseEntity<Object> registerUser(@RequestBody User user) {
+    public ResponseEntity<Object> registerUser(@RequestBody UserSignUpRequest UserSignUpRequest) {
         // Check if user already exists
-        if (userService.existsById(user.getEmail())) {
+        if (userService.existsById(UserSignUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body("Error: Email is already in use!");
         }
-
         // Encrypt the password before saving
-        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+        String passwordHash = passwordEncoder.encode(UserSignUpRequest.getPassword());
+
+        User user = new User(
+                UserSignUpRequest.getName(),
+                UserSignUpRequest.getEmail(),
+                passwordHash,
+                "user"
+        );
 
         // Save the user
         userService.saveUser(user);
