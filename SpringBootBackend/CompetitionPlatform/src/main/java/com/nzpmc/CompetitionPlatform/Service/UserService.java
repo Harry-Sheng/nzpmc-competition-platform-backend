@@ -12,6 +12,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
+    @Autowired
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
@@ -29,5 +30,19 @@ public class UserService {
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public User updateName(String email, String nameToUpdateTo) {
+            Optional<User> userOptional = findByEmail(email);
+
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                user.setName(nameToUpdateTo);
+                userRepository.save(user);
+                return user;
+            }
+
+            throw new IllegalStateException("Student with id" + email + "does not exist");
+
     }
 }
