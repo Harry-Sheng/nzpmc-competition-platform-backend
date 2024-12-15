@@ -45,4 +45,8 @@ public class UserService {
             throw new IllegalStateException("Student with id" + email + "does not exist");
 
     }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }

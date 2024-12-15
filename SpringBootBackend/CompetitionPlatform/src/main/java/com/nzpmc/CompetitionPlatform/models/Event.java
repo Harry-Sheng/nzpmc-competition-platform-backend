@@ -51,4 +51,8 @@ public class Event {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getId() {
+        return this.name;
+    }
 }

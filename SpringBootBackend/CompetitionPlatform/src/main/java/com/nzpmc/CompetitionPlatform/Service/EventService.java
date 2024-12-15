@@ -27,4 +27,8 @@ public class EventService {
     public void saveEvent(Event event) {
         eventRepository.save(event);
     }
+
+    public Optional<Event> findById(String id) {
+        return eventRepository.findById(id);
+    }
 }
