@@ -8,9 +8,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Configuration
 public class SecurityConfig {
+
+    @Autowired
+    private CorsConfig corsConfig;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -25,7 +30,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No sessions
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/user", "/api/login", "/api/user/name").permitAll()
+                        .requestMatchers("/api/users", "/api/login", "/api/users/name").permitAll()
                         .anyRequest().authenticated()
                 )
                 .cors(Customizer.withDefaults());
