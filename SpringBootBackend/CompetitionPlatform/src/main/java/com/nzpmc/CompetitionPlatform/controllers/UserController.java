@@ -25,7 +25,7 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
+    public ResponseEntity<Object> registerUser(@RequestBody User user) {
         // Check if user already exists
         if (userService.existsById(user.getEmail())) {
             return ResponseEntity
@@ -39,7 +39,7 @@ public class UserController {
         // Save the user
         userService.saveUser(user);
 
-        return ResponseEntity.ok("User registered successfully!");
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping
