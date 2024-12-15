@@ -46,7 +46,8 @@ public class JwtService {
         return null;
     }
 
-    public Claims validateToken(String token) throws JwtException {
+    // Extract all claims from the token
+    public Claims extractAllClaims(String token) throws JwtException  {
         return Jwts.parserBuilder()
                 .setSigningKey(getSignKey())
                 .build()

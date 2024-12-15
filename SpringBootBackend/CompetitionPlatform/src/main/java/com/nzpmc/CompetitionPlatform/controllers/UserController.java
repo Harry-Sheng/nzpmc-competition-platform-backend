@@ -64,11 +64,11 @@ public class UserController {
                                             @RequestBody UpdateNameRequest updateNameRequest) {
         try{
             String token = jwtService.extractToken(authorizationHeader);
-            Claims claims;
             if (token == null) return ResponseEntity.badRequest().body("Authorization header missing or invalid");
 
+            Claims claims;
             try {
-                claims = jwtService.validateToken(token);
+                claims = jwtService.extractAllClaims(token);
             } catch (JwtException e) {
                 return ResponseEntity.badRequest().body("Token invalid");
             }
