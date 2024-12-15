@@ -4,13 +4,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.validation.constraints.NotNull;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.util.Date;
 
 @Document("events") // Specifies the MongoDB collection name
 public class Event {
 
     @Id
+    @Field("_id")
     private String name;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -52,7 +54,4 @@ public class Event {
         this.description = description;
     }
 
-    public String getId() {
-        return this.name;
-    }
 }

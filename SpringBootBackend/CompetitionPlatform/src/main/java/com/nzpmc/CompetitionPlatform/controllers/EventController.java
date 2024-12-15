@@ -84,7 +84,7 @@ public class EventController {
         Event event = eventOptional.get();
 
         // Check if user is already signed up for the event
-        if (user.getEvents().stream().anyMatch(e -> e.getId().equals(eventId))) {
+        if (user.getEvents().stream().anyMatch(e -> e.getName().equals(eventId))) {
             return ResponseEntity.badRequest().body("User already signed up for this event");
         }
 
