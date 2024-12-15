@@ -34,19 +34,19 @@ public class UserController {
 
     //User register
     @PostMapping
-    public ResponseEntity<Object> registerUser(@RequestBody UserSignUpRequest UserSignUpRequest) {
+    public ResponseEntity<Object> registerUser(@RequestBody UserSignUpRequest userSignUpRequest) {
         // Check if user already exists
-        if (userService.existsById(UserSignUpRequest.getEmail())) {
+        if (userService.existsById(userSignUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body("Error: Email is already in use!");
         }
         // Encrypt the password before saving
-        String passwordHash = passwordEncoder.encode(UserSignUpRequest.getPassword());
+        String passwordHash = passwordEncoder.encode(userSignUpRequest.getPassword());
 
         User user = new User(
-                UserSignUpRequest.getName(),
-                UserSignUpRequest.getEmail(),
+                userSignUpRequest.getName(),
+                userSignUpRequest.getEmail(),
                 passwordHash,
                 "user"
         );
