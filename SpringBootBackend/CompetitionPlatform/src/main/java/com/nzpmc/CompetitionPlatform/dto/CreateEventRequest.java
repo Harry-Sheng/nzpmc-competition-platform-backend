@@ -11,5 +11,6 @@ public class CreateEventRequest {
     private String name;
     private String description;
     private Date date;
+    private String competitionId;
 }
 

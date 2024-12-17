@@ -15,7 +15,6 @@ import java.util.Date;
 @Document("events") // Specifies the MongoDB collection name
 public class Event {
 
-    // Getters and Setters
     @Id
     @Field("_id")
     private String name;
@@ -25,13 +24,16 @@ public class Event {
 
     private String description;
 
+    private String competitionId;
+
     // Constructors
     public Event() {}
 
-    public Event(String name, Date date, String description) {
+    public Event(String name, Date date, String description, String competitionId) {
         this.name = name;
         this.date = date;
         this.description = description;
+        this.competitionId = competitionId;
     }
 
 }

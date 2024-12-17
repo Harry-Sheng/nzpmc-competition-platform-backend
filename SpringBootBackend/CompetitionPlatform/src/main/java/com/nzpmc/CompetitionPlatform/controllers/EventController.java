@@ -41,7 +41,8 @@ public class EventController {
         Event event = new Event(
                 createEventRequest.getName(),
                 createEventRequest.getDate(),
-                createEventRequest.getDescription()
+                createEventRequest.getDescription(),
+                createEventRequest.getCompetitionId()
         );
         // Save the user
         eventService.saveEvent(event);
