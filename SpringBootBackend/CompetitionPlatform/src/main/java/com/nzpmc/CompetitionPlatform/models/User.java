@@ -1,5 +1,7 @@
 package com.nzpmc.CompetitionPlatform.models;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -9,9 +11,12 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 @Document("user")
 public class User {
 
+    @Setter
     @Id
     @NotNull(message = "Email is required")
     private String email;
@@ -37,38 +42,6 @@ public class User {
         this.passwordHash = passwordHash;
         this.role = role;
         this.events = new ArrayList<Event>();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public List<Event> getEvents() {
-        return events;
     }
 
     public void addEvent(Event event) {
