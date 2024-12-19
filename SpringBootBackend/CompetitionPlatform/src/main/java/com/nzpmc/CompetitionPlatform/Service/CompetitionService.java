@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,5 +56,18 @@ public class CompetitionService {
         competition.getQuestionIds().add(question.getTitle());
         competitionRepository.save(competition);
         return ResponseEntity.ok("Question added successfully to competition ID: " + competitionId);
+    }
+
+    public List<Question> getQuestionsByCompetitionId(String competitionId) {
+        // Fetch competition by ID
+        Optional<Competition> competitionOptional = competitionRepository.findById(competitionId);
+        if (competitionOptional.isEmpty()) {
+            throw new RuntimeException("Competition not found with ID: " + competitionId);
+        }
+
+        // Fetch questions using the question IDs in the competition
+        Competition competition = competitionOptional.get();
+        List<String> questionIds = competition.getQuestionIds();
+        return questionRepository.findAllById(questionIds);
     }
 }
