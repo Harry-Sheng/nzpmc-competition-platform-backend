@@ -4,6 +4,7 @@ import com.nzpmc.CompetitionPlatform.Service.EventService;
 import com.nzpmc.CompetitionPlatform.Service.JwtService;
 import com.nzpmc.CompetitionPlatform.Service.UserService;
 import com.nzpmc.CompetitionPlatform.dto.CreateEventRequest;
+import com.nzpmc.CompetitionPlatform.dto.LinkCompetitionRequest;
 import com.nzpmc.CompetitionPlatform.models.Event;
 import com.nzpmc.CompetitionPlatform.models.User;
 import io.jsonwebtoken.Claims;
@@ -99,5 +100,17 @@ public class EventController {
         response.put("event", event);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{eventId}/competition")
+    public ResponseEntity<Object> linkCompetitionToEvent(
+            @PathVariable String eventId,
+            @RequestBody LinkCompetitionRequest linkCompetitionRequest) {
+        try {
+            Event updatedEvent = eventService.linkCompetition(eventId, linkCompetitionRequest.getTitle());
+            return ResponseEntity.ok(updatedEvent);
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 }
