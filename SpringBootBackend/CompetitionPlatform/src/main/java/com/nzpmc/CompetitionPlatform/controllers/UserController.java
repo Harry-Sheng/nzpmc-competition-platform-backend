@@ -71,24 +71,18 @@ public class UserController {
     @PutMapping("/name")
     public ResponseEntity<?> updateUserName(@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
                                             @RequestBody UpdateNameRequest updateNameRequest) {
-        try{
-            String token = jwtService.extractToken(authorizationHeader);
-            if (token == null) return ResponseEntity.badRequest().body("Authorization header missing or invalid");
+        // Extract and validate token
+        String token = jwtService.extractToken(authorizationHeader);
+        if (token == null) return ResponseEntity.badRequest().body("Authorization header missing or invalid");
 
-            Claims claims;
-            try {
-                claims = jwtService.extractAllClaims(token);
-            } catch (JwtException e) {
-                return ResponseEntity.badRequest().body("Token invalid");
-            }
+        // Extract claims from the token
+        Claims claims = jwtService.extractAllClaims(token);
 
-            String email = claims.get("email", String.class);
-            String nameToUpdateTo = updateNameRequest.getName();
-            User updatedUser = userService.updateName(email, nameToUpdateTo);
-            return ResponseEntity.ok(updatedUser);
-        } catch (IllegalStateException e){
-            return  ResponseEntity.badRequest().body(e.getMessage());
-        }
+        // Retrieve email and update the name
+        String email = claims.get("email", String.class);
+        String nameToUpdateTo = updateNameRequest.getName();
+        User updatedUser = userService.updateName(email, nameToUpdateTo);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @GetMapping("/events")
@@ -98,12 +92,7 @@ public class UserController {
         if (token == null) return ResponseEntity.badRequest().body("Authorization header missing or invalid");
 
         // Validate and parse JWT token
-        Claims claims;
-        try {
-            claims = jwtService.extractAllClaims(token);
-        } catch (JwtException e) {
-            return ResponseEntity.badRequest().body("Token invalid");
-        }
+        Claims claims = jwtService.extractAllClaims(token);
 
         // Extract user ID from token
         String userEmail = claims.get("email", String.class);

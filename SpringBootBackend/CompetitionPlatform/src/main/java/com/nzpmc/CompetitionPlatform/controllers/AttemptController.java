@@ -21,11 +21,9 @@ public class AttemptController {
     public ResponseEntity<String> submitAttempt(
             @PathVariable String competitionId,
             @RequestBody SubmitAttemptRequest submitAttemptRequest) {
-        try {
-            attemptService.saveAttempt(competitionId, submitAttemptRequest);
-            return ResponseEntity.ok("Attempt submitted successfully.");
-        } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-        }
+
+        attemptService.saveAttempt(competitionId, submitAttemptRequest);
+        return ResponseEntity.ok("Attempt submitted successfully.");
+
     }
 }

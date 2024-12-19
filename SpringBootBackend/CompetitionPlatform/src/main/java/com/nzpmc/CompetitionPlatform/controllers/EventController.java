@@ -58,12 +58,7 @@ public class EventController {
         if (token == null) return ResponseEntity.badRequest().body("Authorization header missing or invalid");
 
         // Validate and parse JWT token
-        Claims claims;
-        try {
-            claims = jwtService.extractAllClaims(token);
-        } catch (JwtException e) {
-            return ResponseEntity.badRequest().body("Token invalid");
-        }
+        Claims claims = jwtService.extractAllClaims(token);
 
         // Extract user ID from token
         String userEmail = claims.get("email", String.class);
@@ -106,11 +101,7 @@ public class EventController {
     public ResponseEntity<Object> linkCompetitionToEvent(
             @PathVariable String eventId,
             @RequestBody LinkCompetitionRequest linkCompetitionRequest) {
-        try {
-            Event updatedEvent = eventService.linkCompetition(eventId, linkCompetitionRequest.getTitle());
-            return ResponseEntity.ok(updatedEvent);
-        } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-        }
+        Event updatedEvent = eventService.linkCompetition(eventId, linkCompetitionRequest.getTitle());
+        return ResponseEntity.ok(updatedEvent);
     }
 }
