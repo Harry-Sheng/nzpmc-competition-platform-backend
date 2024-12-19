@@ -53,47 +53,7 @@ public class EventController {
     @PutMapping("/{eventId}/signup")
     public ResponseEntity<Object> signupForEvent(@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
                                                  @PathVariable String eventId) {
-        // Extract JWT token from Authorization header
-        String token = jwtService.extractToken(authorizationHeader);
-        if (token == null) return ResponseEntity.badRequest().body("Authorization header missing or invalid");
-
-        // Validate and parse JWT token
-        Claims claims = jwtService.extractAllClaims(token);
-
-        // Extract user ID from token
-        String userEmail = claims.get("email", String.class);
-        if (userEmail == null) {
-            return ResponseEntity.badRequest().body("Token does not contain user email");
-        }
-
-        // Retrieve user from the database
-        Optional<User> userOptional = userService.findByEmail(userEmail);
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
-        }
-        User user = userOptional.get();
-
-        // Retrieve event from the database
-        Optional<Event> eventOptional = eventService.findById(eventId);
-        if (eventOptional.isEmpty()) {
-            return ResponseEntity.badRequest().body("Event not found");
-        }
-        Event event = eventOptional.get();
-
-        // Check if user is already signed up for the event
-        if (user.getEvents().stream().anyMatch(e -> e.getName().equals(eventId))) {
-            return ResponseEntity.badRequest().body("User already signed up for this event");
-        }
-
-        // Associate the event with the user
-        user.getEvents().add(event);
-        userService.save(user);
-
-        // Prepare response data
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "User signed up for the event successfully");
-        response.put("event", event);
-
+        Map<String, Object> response = eventService.signupForEvent(authorizationHeader, eventId);
         return ResponseEntity.ok(response);
     }
 
