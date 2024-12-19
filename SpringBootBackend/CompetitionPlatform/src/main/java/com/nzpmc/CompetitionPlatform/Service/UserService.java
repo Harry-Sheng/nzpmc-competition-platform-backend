@@ -2,8 +2,12 @@ package com.nzpmc.CompetitionPlatform.Service;
 
 import com.nzpmc.CompetitionPlatform.dto.LoginRequest;
 import com.nzpmc.CompetitionPlatform.dto.LoginResponse;
+import com.nzpmc.CompetitionPlatform.dto.UpdateNameRequest;
+import com.nzpmc.CompetitionPlatform.dto.UserSignUpRequest;
+import com.nzpmc.CompetitionPlatform.models.Event;
 import com.nzpmc.CompetitionPlatform.models.User;
 import com.nzpmc.CompetitionPlatform.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -91,4 +95,75 @@ public class UserService {
                 user.getRole()
         );
     }
+
+    public Object registerUser(UserSignUpRequest userSignUpRequest) {
+        // Check if user already exists
+        if (userRepository.existsById(userSignUpRequest.getEmail())) {
+            throw new RuntimeException("Error: Email is already in use!");
+        }
+
+        // Encrypt the password
+        String passwordHash = passwordEncoder.encode(userSignUpRequest.getPassword());
+
+        // Create a new User entity
+        User user = new User(
+                userSignUpRequest.getName(),
+                userSignUpRequest.getEmail(),
+                passwordHash,
+                "user"
+        );
+
+        // Save the user
+        userRepository.save(user);
+
+        return user;
+    }
+
+    public User updateUserName(String authorizationHeader, UpdateNameRequest updateNameRequest) {
+        // Extract and validate the token
+        String token = jwtService.extractToken(authorizationHeader);
+        if (token == null) {
+            throw new IllegalArgumentException("Authorization header missing or invalid");
+        }
+
+        // Extract claims from the token
+        Claims claims = jwtService.extractAllClaims(token);
+
+        // Retrieve user by email and update the name
+        String email = claims.get("email", String.class);
+        String nameToUpdateTo = updateNameRequest.getName();
+        User updatedUser = updateName(email, nameToUpdateTo);
+
+        // Save the user
+        userRepository.save(updatedUser);
+        return updatedUser;
+    }
+
+    public List<Event> getUserEvents(String authorizationHeader) {
+        // Extract JWT token from Authorization header
+        String token = jwtService.extractToken(authorizationHeader);
+        if (token == null) {
+            throw new IllegalArgumentException("Authorization header missing or invalid");
+        }
+
+        // Validate and parse JWT token
+        Claims claims = jwtService.extractAllClaims(token);
+
+        // Extract user ID (email) from token
+        String userEmail = claims.get("email", String.class);
+        if (userEmail == null) {
+            throw new IllegalArgumentException("Token does not contain user email");
+        }
+
+        // Retrieve user from the database
+        Optional<User> userOptional = findByEmail(userEmail);
+        if (userOptional.isEmpty()) {
+            throw new IllegalArgumentException("User not found");
+        }
+        User user = userOptional.get();
+
+        // Fetch events
+        return user.getEvents();
+    }
+
 }
