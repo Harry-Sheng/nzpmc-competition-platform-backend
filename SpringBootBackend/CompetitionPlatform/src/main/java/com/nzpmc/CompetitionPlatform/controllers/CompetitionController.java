@@ -4,6 +4,7 @@ import com.nzpmc.CompetitionPlatform.Service.CompetitionService;
 import com.nzpmc.CompetitionPlatform.dto.CreateQuestionRequest;
 import com.nzpmc.CompetitionPlatform.dto.CreateCompetitionRequest;
 import com.nzpmc.CompetitionPlatform.models.Competition;
+import com.nzpmc.CompetitionPlatform.models.Event;
 import com.nzpmc.CompetitionPlatform.models.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,12 @@ public class CompetitionController {
     @Autowired
     public CompetitionController(CompetitionService competitionService){
         this.competitionService = competitionService;
+    }
+
+    @GetMapping
+    public ResponseEntity<Object> getCompetition(){
+        List<Competition> competitions = competitionService.getAllCompetitions();
+        return ResponseEntity.ok(competitions);
     }
     @PostMapping
     public ResponseEntity<Object> addCompetition(@RequestBody CreateCompetitionRequest createCompetitionRequest){

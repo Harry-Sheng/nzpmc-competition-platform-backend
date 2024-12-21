@@ -70,4 +70,8 @@ public class CompetitionService {
         List<String> questionIds = competition.getQuestionIds();
         return questionRepository.findAllById(questionIds);
     }
+
+    public List<Competition> getAllCompetitions() {
+        return competitionRepository.findAll();
+    }
 }
