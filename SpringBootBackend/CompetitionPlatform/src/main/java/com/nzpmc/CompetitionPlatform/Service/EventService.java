@@ -55,6 +55,12 @@ public class EventService {
         }
         Event event = eventOptional.get();
 
+        // If competitionId is null set to null
+        if (competitionId == null){
+            event.setCompetitionId(competitionId);
+            return eventRepository.save(event);
+        }
+
         // Link Competition to Event
         Optional<Competition> competitionOptional = competitionRepository.findById(competitionId);
         if (competitionOptional.isEmpty()) {
