@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CompetitionService {
@@ -68,7 +70,14 @@ public class CompetitionService {
         // Fetch questions using the question IDs in the competition
         Competition competition = competitionOptional.get();
         List<String> questionIds = competition.getQuestionIds();
-        return questionRepository.findAllById(questionIds);
+        List<Question> questions = questionRepository.findAllById(questionIds);
+
+        // Create a map of question title to their corresponding Question objects
+        Map<String, Question> questionMap = questions.stream()
+                .collect(Collectors.toMap(Question::getTitle, question -> question));
+
+        // Order the questions based on the order of questionIds
+        return questionIds.stream().map(questionMap::get).collect(Collectors.toList());
     }
 
     public List<Competition> getAllCompetitions() {
