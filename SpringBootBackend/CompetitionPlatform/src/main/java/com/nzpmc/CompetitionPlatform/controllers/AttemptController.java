@@ -29,8 +29,9 @@ public class AttemptController {
     }
 
     @GetMapping("/{competitionId}/results")
-    public ResponseEntity<List<ResultResponse>> generateResults(@PathVariable String competitionId) {
-        List<ResultResponse> results = attemptService.generateResults(competitionId);
+    public ResponseEntity<List<ResultResponse>> generateResults(@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
+                                                                @PathVariable String competitionId) {
+        List<ResultResponse> results = attemptService.generateResults(authorizationHeader, competitionId);
         return ResponseEntity.ok(results);
     }
 }

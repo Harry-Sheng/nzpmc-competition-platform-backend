@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.Map;
 import java.security.Key;
+import java.util.Objects;
 
 @Component
 public class JwtService {
@@ -53,5 +54,17 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public boolean isAdmin(String authorizationHeader){
+        // Extract JWT token from Authorization header
+        String token = extractToken(authorizationHeader);
+        if (token == null) {
+            throw new IllegalArgumentException("Authorization header missing or invalid");
+        }
+
+        // Validate and parse JWT token
+        Claims claims = extractAllClaims(token);
+        return "admin".equals(claims.get("role", String.class));
     }
 }

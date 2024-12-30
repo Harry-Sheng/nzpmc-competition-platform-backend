@@ -23,13 +23,17 @@ public class AttemptService {
     private final CompetitionRepository competitionRepository;
 
     private final CompetitionService competitionService;
+
+    private final JwtService jwtService;
     @Autowired
     public AttemptService(AttemptRepository attemptRepository,
                           CompetitionRepository competitionRepository,
-                          CompetitionService competitionService){
+                          CompetitionService competitionService,
+                          JwtService jwtService){
         this.competitionRepository = competitionRepository;
         this.attemptRepository = attemptRepository;
         this.competitionService = competitionService;
+        this.jwtService = jwtService;
     }
 
 
@@ -50,7 +54,10 @@ public class AttemptService {
         attemptRepository.save(attempt);
     }
 
-    public List<ResultResponse> generateResults(String competitionId) {
+    public List<ResultResponse> generateResults(String authorizationHeader , String competitionId) {
+        if (!jwtService.isAdmin(authorizationHeader)){
+            throw new RuntimeException("Not Admin");
+        }
         // Fetch competition by ID
         Optional<Competition> competitionOptional = competitionRepository.findById(competitionId);
         if (competitionOptional.isEmpty()) {
