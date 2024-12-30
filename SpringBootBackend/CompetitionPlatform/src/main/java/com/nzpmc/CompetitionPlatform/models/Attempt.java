@@ -13,7 +13,6 @@ import java.util.Map;
 @Document("attempt")
 public class Attempt {
 
-    @Id
     private String studentEmail;
 
     @NotNull(message = "Competition Id is required")
