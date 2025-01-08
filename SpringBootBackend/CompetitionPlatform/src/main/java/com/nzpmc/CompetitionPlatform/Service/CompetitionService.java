@@ -43,14 +43,9 @@ public class CompetitionService {
         question.setOptions(request.getOptions());
         question.setCorrectChoiceIndex(request.getCorrectChoiceIndex());
 
-        //Check if question poll already have this question
-        String questionTitle = request.getTitle();
-        if (questionRepository.findAll().stream().anyMatch(e -> e.getTitle().equals(questionTitle))) {
-            return ResponseEntity.badRequest().body("This question already exists in the question poll.");
-        }
-
         //Check if competition already have this question
         Competition competition = competitionOptional.get();
+        String questionTitle = request.getTitle();
         if (competition.getQuestionIds().stream().anyMatch(e -> e.equals(questionTitle))) {
             return ResponseEntity.badRequest().body("This question already exists in the competition.");
         }

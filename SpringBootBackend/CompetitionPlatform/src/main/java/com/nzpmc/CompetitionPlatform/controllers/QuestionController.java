@@ -1,6 +1,7 @@
 package com.nzpmc.CompetitionPlatform.controllers;
 
 import com.nzpmc.CompetitionPlatform.Service.QuestionService;
+import com.nzpmc.CompetitionPlatform.dto.CreateQuestionRequest;
 import com.nzpmc.CompetitionPlatform.models.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +26,11 @@ public class QuestionController {
     public ResponseEntity<Object> getQuestions(@RequestHeader(value = "Authorization") String authorizationHeader) {
         List<Question> questions = questionService.getQuestions(authorizationHeader);
         return ResponseEntity.ok(questions);
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> createQuestion(@RequestHeader(value = "Authorization") String authorizationHeader,
+                                                 @RequestBody CreateQuestionRequest createQuestionRequest) {
+        return questionService.createQuestion(authorizationHeader, createQuestionRequest);
     }
 }
