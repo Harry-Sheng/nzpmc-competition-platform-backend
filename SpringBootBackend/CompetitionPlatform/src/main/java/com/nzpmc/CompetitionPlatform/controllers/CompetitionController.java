@@ -1,6 +1,7 @@
 package com.nzpmc.CompetitionPlatform.controllers;
 
 import com.nzpmc.CompetitionPlatform.Service.CompetitionService;
+import com.nzpmc.CompetitionPlatform.dto.AddQuestionToCompetitionRequest;
 import com.nzpmc.CompetitionPlatform.dto.CreateQuestionRequest;
 import com.nzpmc.CompetitionPlatform.dto.CreateCompetitionRequest;
 import com.nzpmc.CompetitionPlatform.models.Competition;
@@ -42,9 +43,8 @@ public class CompetitionController {
 
     @PostMapping("/{competitionId}/questions")
     public ResponseEntity<Object> addQuestionToCompetition(@PathVariable String competitionId,
-                                                           @RequestBody CreateQuestionRequest createQuestionRequest) {
-        System.out.println(createQuestionRequest);
-        return competitionService.addQuestionToCompetition(competitionId, createQuestionRequest);
+                                                           @RequestBody AddQuestionToCompetitionRequest addQuestionToCompetitionRequest) {
+        return competitionService.addQuestionToCompetition(competitionId, addQuestionToCompetitionRequest);
     }
 
     @GetMapping("/{competitionId}/questions")

@@ -1,5 +1,6 @@
 package com.nzpmc.CompetitionPlatform.Service;
 
+import com.nzpmc.CompetitionPlatform.dto.AddQuestionToCompetitionRequest;
 import com.nzpmc.CompetitionPlatform.dto.CreateQuestionRequest;
 import com.nzpmc.CompetitionPlatform.models.Competition;
 import com.nzpmc.CompetitionPlatform.models.Question;
@@ -30,34 +31,30 @@ public class CompetitionService {
         competitionRepository.save(competition);
     }
 
-    public ResponseEntity<Object>  addQuestionToCompetition(String competitionId, CreateQuestionRequest request){
+    public ResponseEntity<Object>  addQuestionToCompetition(String competitionId,  AddQuestionToCompetitionRequest addQuestionToCompetitionRequest){
         // Fetch competition by ID
         Optional<Competition> competitionOptional = competitionRepository.findById(competitionId);
         if (competitionOptional.isEmpty()) {
             return ResponseEntity.badRequest().body("Competition not found with ID: " + competitionId);
         }
 
+
+        // Find the question by ID
+        String questionTitle = addQuestionToCompetitionRequest.getTitle();
+        Optional<Question> questionOptional = questionRepository.findById(questionTitle);
+
+        if (questionOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("Question not found.");
+        }
+
         //Check if competition already have this question
         Competition competition = competitionOptional.get();
-        String questionTitle = request.getTitle();
         if (competition.getQuestionIds().stream().anyMatch(e -> e.equals(questionTitle))) {
             return ResponseEntity.badRequest().body("This question already exists in the competition.");
         }
 
-        // Create a Question
-        Question question = new Question(
-                request.getTitle(),
-                request.getOptions(),
-                request.getCorrectChoiceIndex(),
-                request.getDifficulty(),
-                request.getTopics()
-        );
-
-        // Save the question
-        questionRepository.save(question);
-
         // Associate the question with the competition
-        competition.getQuestionIds().add(question.getTitle());
+        competition.getQuestionIds().add(questionTitle);
         competitionRepository.save(competition);
         return ResponseEntity.ok("Question added successfully to competition ID: " + competitionId);
     }
