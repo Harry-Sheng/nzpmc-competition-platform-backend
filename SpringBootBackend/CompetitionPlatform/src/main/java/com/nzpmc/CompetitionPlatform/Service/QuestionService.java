@@ -34,17 +34,24 @@ public class QuestionService {
             throw new RuntimeException("Not Admin");
         }
 
-        // Create a new Question
-        Question question = new Question();
-        question.setTitle(request.getTitle());
-        question.setOptions(request.getOptions());
-        question.setCorrectChoiceIndex(request.getCorrectChoiceIndex());
-
         //Check if question poll already have this question
         String questionTitle = request.getTitle();
-        if (questionRepository.findAll().stream().anyMatch(e -> e.getTitle().equals(questionTitle))) {
-            return ResponseEntity.badRequest().body("This question already exists in the question poll.");
+        boolean questionExists = questionRepository.findAll()
+                .stream()
+                .anyMatch(existingQuestion -> existingQuestion.getTitle().equals(questionTitle));
+
+        if (questionExists) {
+            return ResponseEntity.badRequest().body("This question already exists in the question pool.");
         }
+
+        // Create a new Question
+        Question question = new Question(
+                request.getTitle(),
+                request.getOptions(),
+                request.getCorrectChoiceIndex(),
+                request.getDifficulty(),
+                request.getTopics()
+        );
 
         // Save the question
         questionRepository.save(question);

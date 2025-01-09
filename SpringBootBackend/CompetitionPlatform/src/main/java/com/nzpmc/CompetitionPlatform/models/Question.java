@@ -19,13 +19,24 @@ public class Question {
 
     private int correctChoiceIndex;
 
+    private Difficulty difficulty;
+
+    private List<String> topics;
     // Constructors
     public Question() {}
 
-    public Question(String title, List<String> options, int correctChoiceIndex) {
+    public Question(String title, List<String> options, int correctChoiceIndex,
+                    Difficulty difficulty, List<String> topics) {
         this.title = title;
         this.options = options;
         this.correctChoiceIndex = correctChoiceIndex;
+        this.difficulty = difficulty;
+        this.topics = topics;
     }
+
+    public enum Difficulty {
+        EASY, MEDIUM, HARD
+    }
+
 
 }

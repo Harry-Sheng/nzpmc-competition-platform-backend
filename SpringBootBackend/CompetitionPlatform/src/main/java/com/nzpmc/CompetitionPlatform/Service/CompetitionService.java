@@ -37,18 +37,21 @@ public class CompetitionService {
             return ResponseEntity.badRequest().body("Competition not found with ID: " + competitionId);
         }
 
-        // Create a new Question
-        Question question = new Question();
-        question.setTitle(request.getTitle());
-        question.setOptions(request.getOptions());
-        question.setCorrectChoiceIndex(request.getCorrectChoiceIndex());
-
         //Check if competition already have this question
         Competition competition = competitionOptional.get();
         String questionTitle = request.getTitle();
         if (competition.getQuestionIds().stream().anyMatch(e -> e.equals(questionTitle))) {
             return ResponseEntity.badRequest().body("This question already exists in the competition.");
         }
+
+        // Create a Question
+        Question question = new Question(
+                request.getTitle(),
+                request.getOptions(),
+                request.getCorrectChoiceIndex(),
+                request.getDifficulty(),
+                request.getTopics()
+        );
 
         // Save the question
         questionRepository.save(question);
