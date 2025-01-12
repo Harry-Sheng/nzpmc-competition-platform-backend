@@ -32,13 +32,7 @@ public class CompetitionController {
     }
     @PostMapping
     public ResponseEntity<Object> addCompetition(@RequestBody CreateCompetitionRequest createCompetitionRequest){
-        ArrayList<String> questionIds = new ArrayList<String>();
-        Competition competition = new Competition(
-                createCompetitionRequest.getTitle(),
-                questionIds
-        );
-        competitionService.saveEvent(competition);
-        return ResponseEntity.ok(competition);
+        return  competitionService.createCompetition(createCompetitionRequest);
     }
 
     @PostMapping("/{competitionId}/questions")

@@ -1,6 +1,7 @@
 package com.nzpmc.CompetitionPlatform.Service;
 
 import com.nzpmc.CompetitionPlatform.dto.AddQuestionToCompetitionRequest;
+import com.nzpmc.CompetitionPlatform.dto.CreateCompetitionRequest;
 import com.nzpmc.CompetitionPlatform.dto.CreateQuestionRequest;
 import com.nzpmc.CompetitionPlatform.models.Competition;
 import com.nzpmc.CompetitionPlatform.models.Question;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -81,5 +83,17 @@ public class CompetitionService {
 
     public List<Competition> getAllCompetitions() {
         return competitionRepository.findAll();
+    }
+
+    public ResponseEntity<Object> createCompetition(CreateCompetitionRequest createCompetitionRequest) {
+        ArrayList<String> questionIds = new ArrayList<String>();
+        Competition competition = new Competition(
+                createCompetitionRequest.getTitle(),
+                questionIds,
+                createCompetitionRequest.getStartTime(),
+                createCompetitionRequest.getEndTime()
+        );
+        competitionRepository.save(competition);
+        return ResponseEntity.ok(competition);
     }
 }
