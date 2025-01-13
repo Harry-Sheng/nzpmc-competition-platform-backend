@@ -4,6 +4,7 @@ import com.nzpmc.CompetitionPlatform.Service.CompetitionService;
 import com.nzpmc.CompetitionPlatform.dto.AddQuestionToCompetitionRequest;
 import com.nzpmc.CompetitionPlatform.dto.CreateQuestionRequest;
 import com.nzpmc.CompetitionPlatform.dto.CreateCompetitionRequest;
+import com.nzpmc.CompetitionPlatform.dto.GetCompetitionByIdRequest;
 import com.nzpmc.CompetitionPlatform.models.Competition;
 import com.nzpmc.CompetitionPlatform.models.Event;
 import com.nzpmc.CompetitionPlatform.models.Question;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/competitions")
@@ -28,6 +30,12 @@ public class CompetitionController {
     @GetMapping
     public ResponseEntity<Object> getCompetition(){
         List<Competition> competitions = competitionService.getAllCompetitions();
+        return ResponseEntity.ok(competitions);
+    }
+
+    @GetMapping("/getById")
+    public ResponseEntity<Object> getCompetitionById( @RequestBody GetCompetitionByIdRequest getCompetitionByIdRequest){
+        Optional<Competition> competitions = competitionService.getCompetitionById(getCompetitionByIdRequest.getCompetitionId());
         return ResponseEntity.ok(competitions);
     }
     @PostMapping

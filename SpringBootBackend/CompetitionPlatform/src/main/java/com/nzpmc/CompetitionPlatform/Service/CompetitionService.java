@@ -96,4 +96,13 @@ public class CompetitionService {
         competitionRepository.save(competition);
         return ResponseEntity.ok(competition);
     }
+
+    public Optional<Competition> getCompetitionById(String competitionId) {
+        // Fetch competition by ID
+        Optional<Competition> competitionOptional = competitionRepository.findById(competitionId);
+        if (competitionOptional.isEmpty()) {
+            throw new RuntimeException("Competition not found with ID: " + competitionId);
+        }
+        return competitionOptional;
+    }
 }

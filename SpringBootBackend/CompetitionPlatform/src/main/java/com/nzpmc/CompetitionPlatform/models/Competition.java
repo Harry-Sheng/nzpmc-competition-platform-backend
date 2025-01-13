@@ -17,7 +17,6 @@ public class Competition {
     private String title;
 
     private List<String> questionIds;
-
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     // Constructors
