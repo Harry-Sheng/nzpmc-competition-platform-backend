@@ -33,7 +33,7 @@ public class CompetitionController {
         return ResponseEntity.ok(competitions);
     }
 
-    @GetMapping("/getById")
+    @PostMapping("/getById")
     public ResponseEntity<Object> getCompetitionById( @RequestBody GetCompetitionByIdRequest getCompetitionByIdRequest){
         Optional<Competition> competitions = competitionService.getCompetitionById(getCompetitionByIdRequest.getCompetitionId());
         return ResponseEntity.ok(competitions);
