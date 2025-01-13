@@ -1,10 +1,7 @@
 package com.nzpmc.CompetitionPlatform.controllers;
 
 import com.nzpmc.CompetitionPlatform.Service.CompetitionService;
-import com.nzpmc.CompetitionPlatform.dto.AddQuestionToCompetitionRequest;
-import com.nzpmc.CompetitionPlatform.dto.CreateQuestionRequest;
-import com.nzpmc.CompetitionPlatform.dto.CreateCompetitionRequest;
-import com.nzpmc.CompetitionPlatform.dto.GetCompetitionByIdRequest;
+import com.nzpmc.CompetitionPlatform.dto.*;
 import com.nzpmc.CompetitionPlatform.models.Competition;
 import com.nzpmc.CompetitionPlatform.models.Event;
 import com.nzpmc.CompetitionPlatform.models.Question;
@@ -53,5 +50,10 @@ public class CompetitionController {
     public ResponseEntity<Object> getQuestionsByCompetitionId(@PathVariable String competitionId) {
         List<Question> questions = competitionService.getQuestionsByCompetitionId(competitionId);
         return ResponseEntity.ok(questions);
+    }
+
+    @GetMapping("/inInCompetitionTime")
+    public boolean isInCompetitionTime(@RequestBody IsInCompetitionTime isInCompetitionTime) {
+        return competitionService.isInCompetitionTime(isInCompetitionTime.getCompetitionId());
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -104,5 +105,16 @@ public class CompetitionService {
             throw new RuntimeException("Competition not found with ID: " + competitionId);
         }
         return competitionOptional;
+    }
+
+    public boolean isInCompetitionTime(String competitionId) {
+        Optional<Competition> competitionOptional = competitionRepository.findById(competitionId);
+
+        if (competitionOptional.isPresent()) {
+            Competition competition = competitionOptional.get();
+            LocalDateTime now = LocalDateTime.now();
+            return now.isAfter(competition.getStartTime()) && now.isBefore(competition.getEndTime());
+        }
+        return false;
     }
 }
