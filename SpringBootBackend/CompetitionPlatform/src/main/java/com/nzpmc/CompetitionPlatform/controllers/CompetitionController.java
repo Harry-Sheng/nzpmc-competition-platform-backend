@@ -52,7 +52,7 @@ public class CompetitionController {
         return ResponseEntity.ok(questions);
     }
 
-    @GetMapping("/inInCompetitionTime")
+    @PostMapping("/inInCompetitionTime")
     public boolean isInCompetitionTime(@RequestBody IsInCompetitionTime isInCompetitionTime) {
         return competitionService.isInCompetitionTime(isInCompetitionTime.getCompetitionId());
     }
