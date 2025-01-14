@@ -10,6 +10,7 @@ import com.nzpmc.CompetitionPlatform.repository.CompetitionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,11 +45,33 @@ public class AttemptService {
             throw new RuntimeException("Competition not found with ID: " + competitionId);
         }
 
+        Competition competition = competitionOptional.get();
+
+        // Fetch the competition time window
+        LocalDateTime startTime = competition.getStartTime();
+        LocalDateTime endTime = competition.getEndTime();
+
+        // Get current time
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        // Allow for a 1-minute buffer past the end time
+        LocalDateTime bufferedEndTime = endTime.plusMinutes(1);
+
+        // Validate time window
+        if (currentTime.isBefore(startTime)) {
+            throw new RuntimeException("Competition has not started yet.");
+        }
+        if (currentTime.isAfter(bufferedEndTime)) {
+            throw new RuntimeException("Competition has ended. Submission is no longer accepted.");
+        }
+
         // Map request data to Attempt entity
         Attempt attempt = new Attempt();
         attempt.setStudentEmail(submitAttemptRequest.getStudentEmail());
         attempt.setCompetitionId(competitionId);
         attempt.setAttempts(submitAttemptRequest.getAttempts());
+
+        // reject attempt if passed time window
 
         // Save attempt
         attemptRepository.save(attempt);
