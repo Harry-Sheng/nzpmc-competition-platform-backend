@@ -1,5 +1,6 @@
 package com.nzpmc.CompetitionPlatform.Service;
 
+import com.nzpmc.CompetitionPlatform.config.PromptConfig;
 import com.nzpmc.CompetitionPlatform.dto.ChatGptRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -30,14 +31,14 @@ public class ChatGptService {
         List<Map<String, String>> messages = new ArrayList<>(request.getMessages());
         Map<String, String> developerMessage = new HashMap<>();
         developerMessage.put("role", "system");
-        developerMessage.put("content", "You are a NZPMC assistance bot, NZPMC is the new zealand physics and math competition platform");
+        developerMessage.put("content", PromptConfig.promptEngineerMessage);
         messages.add(0, developerMessage); // Add the developer message at the beginning
 
         // Prepare payload
         Map<String, Object> payload = new HashMap<>();
-        payload.put("model", request.getModel());
+        payload.put("model", "gpt-4o-mini");
         payload.put("messages", messages);
-        payload.put("store", request.isStore());
+        payload.put("store", true);
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(payload, headers);
 

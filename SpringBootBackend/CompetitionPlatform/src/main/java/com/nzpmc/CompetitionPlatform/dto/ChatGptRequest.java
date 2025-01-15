@@ -11,7 +11,5 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatGptRequest {
-    private String model;
-    private boolean store;
     private List<Map<String, String>> messages;
 }
