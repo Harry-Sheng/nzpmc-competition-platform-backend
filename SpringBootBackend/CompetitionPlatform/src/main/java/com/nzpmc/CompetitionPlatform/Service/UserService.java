@@ -125,14 +125,8 @@ public class UserService {
     }
 
     public User updateUserName(String authorizationHeader, UpdateNameRequest updateNameRequest) {
-        // Extract and validate the token
-        String token = jwtService.extractToken(authorizationHeader);
-        if (token == null) {
-            throw new IllegalArgumentException("Authorization header missing or invalid");
-        }
-
-        // Extract claims from the token
-        Claims claims = jwtService.extractAllClaims(token);
+        // Extract claims
+        Claims claims = jwtService.extractAllClaims(authorizationHeader);
 
         // Retrieve user by email and update the name
         String email = claims.get("email", String.class);
@@ -145,16 +139,10 @@ public class UserService {
     }
 
     public List<Event> getUserEvents(String authorizationHeader) {
-        // Extract JWT token from Authorization header
-        String token = jwtService.extractToken(authorizationHeader);
-        if (token == null) {
-            throw new IllegalArgumentException("Authorization header missing or invalid");
-        }
+        // Extract claims
+        Claims claims = jwtService.extractAllClaims(authorizationHeader);
 
-        // Validate and parse JWT token
-        Claims claims = jwtService.extractAllClaims(token);
-
-        // Extract user ID (email) from token
+        // Extract user ID (email) from claim
         String userEmail = claims.get("email", String.class);
         if (userEmail == null) {
             throw new IllegalArgumentException("Token does not contain user email");

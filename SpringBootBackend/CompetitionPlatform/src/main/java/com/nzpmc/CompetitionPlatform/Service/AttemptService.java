@@ -40,14 +40,9 @@ public class AttemptService {
 
 
     public void saveAttempt(String authorizationHeader, String competitionId, SubmitAttemptRequest submitAttemptRequest) {
-        // Extract and validate the token
-        String token = jwtService.extractToken(authorizationHeader);
-        if (token == null) {
-            throw new IllegalArgumentException("Authorization header missing or invalid");
-        }
 
         // Extract claims from the token
-        Claims claims = jwtService.extractAllClaims(token);
+        Claims claims = jwtService.extractAllClaims(authorizationHeader);
 
         // Retrieve user by email
         String email = claims.get("email", String.class);

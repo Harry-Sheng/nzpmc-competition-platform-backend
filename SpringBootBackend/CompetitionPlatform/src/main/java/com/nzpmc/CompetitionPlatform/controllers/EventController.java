@@ -45,7 +45,7 @@ public class EventController {
     }
 
     @PutMapping("/{eventId}/signup")
-    public ResponseEntity<Object> signupForEvent(@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
+    public ResponseEntity<Object> signupForEvent(@RequestHeader(value = "Authorization") String authorizationHeader,
                                                  @PathVariable String eventId) {
         Map<String, Object> response = eventService.signupForEvent(authorizationHeader, eventId);
         return ResponseEntity.ok(response);

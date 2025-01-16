@@ -88,14 +88,9 @@ public class EventService {
     }
 
     public Map<String, Object> signupForEvent(String authorizationHeader, String eventId) {
-        // Extract JWT token from Authorization header
-        String token = jwtService.extractToken(authorizationHeader);
-        if (token == null) {
-            throw new IllegalArgumentException("Authorization header missing or invalid");
-        }
 
         // Validate and parse JWT token
-        Claims claims = jwtService.extractAllClaims(token);
+        Claims claims = jwtService.extractAllClaims(authorizationHeader);
 
         // Extract user ID from token
         String userEmail = claims.get("email", String.class);

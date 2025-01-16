@@ -48,7 +48,13 @@ public class JwtService {
     }
 
     // Extract all claims from the token
-    public Claims extractAllClaims(String token) throws JwtException  {
+    public Claims extractAllClaims(String authorizationHeader){
+        // Extract JWT token from Authorization header
+        String token = extractToken(authorizationHeader);
+        if (token == null) {
+            throw new IllegalArgumentException("Authorization header missing or invalid");
+        }
+
         return Jwts.parserBuilder()
                 .setSigningKey(getSignKey())
                 .build()
@@ -57,14 +63,7 @@ public class JwtService {
     }
 
     public boolean isAdmin(String authorizationHeader){
-        // Extract JWT token from Authorization header
-        String token = extractToken(authorizationHeader);
-        if (token == null) {
-            throw new IllegalArgumentException("Authorization header missing or invalid");
-        }
-
-        // Validate and parse JWT token
-        Claims claims = extractAllClaims(token);
+        Claims claims = extractAllClaims(authorizationHeader);
         return "admin".equals(claims.get("role", String.class));
     }
 }
