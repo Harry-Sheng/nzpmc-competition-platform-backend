@@ -113,4 +113,12 @@ public class EventService {
         response.put("event", event);
         return response;
     }
+
+    public ResponseEntity<Object> deleteEventById(String eventId) {
+        // Retrieve event from the database
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+        eventRepository.deleteById(eventId);
+        return ResponseEntity.ok(eventId + " is deleted");
+    }
 }

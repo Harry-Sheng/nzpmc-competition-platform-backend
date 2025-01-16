@@ -64,4 +64,9 @@ public class EventController {
         Event updatedEvent = eventService.linkCompetition(eventId, linkCompetitionRequest.getTitle());
         return ResponseEntity.ok(updatedEvent);
     }
+
+    @DeleteMapping("/{eventId}")
+    public ResponseEntity<Object> deleteEvent(@PathVariable String eventId) {
+        return eventService.deleteEventById(eventId);
+    }
 }
