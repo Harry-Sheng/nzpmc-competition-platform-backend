@@ -23,13 +23,14 @@ public class AttemptController {
     @PostMapping("/{competitionId}")
     public ResponseEntity<String> submitAttempt(
             @PathVariable String competitionId,
+            @RequestHeader(value = "Authorization") String authorizationHeader,
             @RequestBody SubmitAttemptRequest submitAttemptRequest) {
-        attemptService.saveAttempt(competitionId, submitAttemptRequest);
+        attemptService.saveAttempt(authorizationHeader, competitionId, submitAttemptRequest);
         return ResponseEntity.ok("Attempt submitted successfully.");
     }
 
     @GetMapping("/{competitionId}/results")
-    public ResponseEntity<List<ResultResponse>> generateResults(@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
+    public ResponseEntity<List<ResultResponse>> generateResults(@RequestHeader(value = "Authorization") String authorizationHeader,
                                                                 @PathVariable String competitionId) {
         List<ResultResponse> results = attemptService.generateResults(authorizationHeader, competitionId);
         return ResponseEntity.ok(results);

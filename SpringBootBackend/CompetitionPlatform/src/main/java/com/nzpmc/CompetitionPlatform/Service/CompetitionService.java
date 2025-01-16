@@ -24,18 +24,26 @@ public class CompetitionService {
     private final CompetitionRepository competitionRepository;
 
     private final QuestionRepository questionRepository;
+
+    private final JwtService jwtService;
     @Autowired
     public CompetitionService(CompetitionRepository competitionRepository,
-                              QuestionRepository questionRepository){
+                              QuestionRepository questionRepository,
+                              JwtService jwtService){
         this.competitionRepository = competitionRepository;
         this.questionRepository = questionRepository;
+        this.jwtService = jwtService;
     }
 
     public void saveEvent(Competition competition) {
         competitionRepository.save(competition);
     }
 
-    public ResponseEntity<Object>  addQuestionToCompetition(String competitionId,  AddQuestionToCompetitionRequest addQuestionToCompetitionRequest){
+    public ResponseEntity<Object>  addQuestionToCompetition(String authorizationHeader, String competitionId,  AddQuestionToCompetitionRequest addQuestionToCompetitionRequest){
+        if (!jwtService.isAdmin(authorizationHeader)){
+            throw new RuntimeException("Not Admin");
+        }
+
         // Fetch competition by ID
         Optional<Competition> competitionOptional = competitionRepository.findById(competitionId);
         if (competitionOptional.isEmpty()) {
@@ -87,7 +95,11 @@ public class CompetitionService {
         return competitionRepository.findAll();
     }
 
-    public ResponseEntity<Object> createCompetition(CreateCompetitionRequest createCompetitionRequest) {
+    public ResponseEntity<Object> createCompetition(String authorizationHeader , CreateCompetitionRequest createCompetitionRequest) {
+        if (!jwtService.isAdmin(authorizationHeader)){
+            throw new RuntimeException("Not Admin");
+        }
+
         ArrayList<String> questionIds = new ArrayList<String>();
         Competition competition = new Competition(
                 createCompetitionRequest.getTitle(),
@@ -119,7 +131,11 @@ public class CompetitionService {
         return false;
     }
 
-    public ResponseEntity<Object> deleteCompetitionById(String competitionId) {
+    public ResponseEntity<Object> deleteCompetitionById(String authorizationHeader, String competitionId) {
+        if (!jwtService.isAdmin(authorizationHeader)){
+            throw new RuntimeException("Not Admin");
+        }
+
         // Retrieve competition from the database
         Competition competition =competitionRepository.findById(competitionId)
                 .orElseThrow(() -> new IllegalArgumentException("Competition not found"));

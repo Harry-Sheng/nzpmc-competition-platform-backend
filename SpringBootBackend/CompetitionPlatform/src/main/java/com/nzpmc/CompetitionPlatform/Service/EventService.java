@@ -1,5 +1,6 @@
 package com.nzpmc.CompetitionPlatform.Service;
 
+import com.nzpmc.CompetitionPlatform.dto.CreateEventRequest;
 import com.nzpmc.CompetitionPlatform.models.Competition;
 import com.nzpmc.CompetitionPlatform.models.Event;
 import com.nzpmc.CompetitionPlatform.models.User;
@@ -39,15 +40,29 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-    public void saveEvent(Event event) {
-        eventRepository.save(event);
+    public Event saveEvent(String authorizationHeader, CreateEventRequest createEventRequest) {
+        if (!jwtService.isAdmin(authorizationHeader)){
+            throw new RuntimeException("Not Admin");
+        }
+
+        Event event = new Event(
+                createEventRequest.getName(),
+                createEventRequest.getDate(),
+                createEventRequest.getDescription(),
+                createEventRequest.getCompetitionId()
+        );
+        return eventRepository.save(event);
     }
 
     public Optional<Event> findById(String id) {
         return eventRepository.findById(id);
     }
 
-    public Event linkCompetition(String eventId, String competitionId) {
+    public Event linkCompetition(String authorizationHeader, String eventId, String competitionId) {
+        if (!jwtService.isAdmin(authorizationHeader)){
+            throw new RuntimeException("Not Admin");
+        }
+
         // Fetch Event
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         if (eventOptional.isEmpty()) {
@@ -114,7 +129,11 @@ public class EventService {
         return response;
     }
 
-    public ResponseEntity<Object> deleteEventById(String eventId) {
+    public ResponseEntity<Object> deleteEventById(String authorizationHeader,String eventId) {
+        if (!jwtService.isAdmin(authorizationHeader)){
+            throw new RuntimeException("Not Admin");
+        }
+
         // Retrieve event from the database
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found"));

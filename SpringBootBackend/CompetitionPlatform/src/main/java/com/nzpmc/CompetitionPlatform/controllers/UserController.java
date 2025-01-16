@@ -31,8 +31,8 @@ public class UserController {
 
     // Get users
     @GetMapping
-    public ResponseEntity<Object> getUsers(){
-        List<User> users = userService.getAllUser();
+    public ResponseEntity<Object> getUsers(@RequestHeader(value = "Authorization") String authorizationHeader){
+        List<User> users = userService.getAllUser(authorizationHeader);
         return ResponseEntity.ok(users);
     }
 
@@ -51,7 +51,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Object> deleteUser(@PathVariable String userId) {
-        return userService.deleteUserById(userId);
+    public ResponseEntity<Object> deleteUser(@RequestHeader(value = "Authorization") String authorizationHeader,
+                                             @PathVariable String userId) {
+        return userService.deleteUserById(authorizationHeader, userId);
     }
 }

@@ -7,6 +7,7 @@ import com.nzpmc.CompetitionPlatform.models.Attempt;
 import com.nzpmc.CompetitionPlatform.models.Question;
 import com.nzpmc.CompetitionPlatform.repository.AttemptRepository;
 import com.nzpmc.CompetitionPlatform.repository.CompetitionRepository;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,19 @@ public class AttemptService {
     }
 
 
-    public void saveAttempt(String competitionId, SubmitAttemptRequest submitAttemptRequest) {
+    public void saveAttempt(String authorizationHeader, String competitionId, SubmitAttemptRequest submitAttemptRequest) {
+        // Extract and validate the token
+        String token = jwtService.extractToken(authorizationHeader);
+        if (token == null) {
+            throw new IllegalArgumentException("Authorization header missing or invalid");
+        }
+
+        // Extract claims from the token
+        Claims claims = jwtService.extractAllClaims(token);
+
+        // Retrieve user by email
+        String email = claims.get("email", String.class);
+
         // Fetch competition by ID
         Optional<Competition> competitionOptional = competitionRepository.findById(competitionId);
         if (competitionOptional.isEmpty()) {
@@ -67,7 +80,7 @@ public class AttemptService {
 
         // Map request data to Attempt entity
         Attempt attempt = new Attempt();
-        attempt.setStudentEmail(submitAttemptRequest.getStudentEmail());
+        attempt.setStudentEmail(email);
         attempt.setCompetitionId(competitionId);
         attempt.setAttempts(submitAttemptRequest.getAttempts());
 

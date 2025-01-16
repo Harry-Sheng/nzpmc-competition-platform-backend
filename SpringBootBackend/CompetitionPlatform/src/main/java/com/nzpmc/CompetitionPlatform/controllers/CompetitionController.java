@@ -36,14 +36,16 @@ public class CompetitionController {
         return ResponseEntity.ok(competitions);
     }
     @PostMapping
-    public ResponseEntity<Object> addCompetition(@RequestBody CreateCompetitionRequest createCompetitionRequest){
-        return  competitionService.createCompetition(createCompetitionRequest);
+    public ResponseEntity<Object> addCompetition(@RequestHeader(value = "Authorization") String authorizationHeader,
+                                                 @RequestBody CreateCompetitionRequest createCompetitionRequest){
+        return  competitionService.createCompetition(authorizationHeader, createCompetitionRequest);
     }
 
     @PostMapping("/{competitionId}/questions")
     public ResponseEntity<Object> addQuestionToCompetition(@PathVariable String competitionId,
+                                                           @RequestHeader(value = "Authorization") String authorizationHeader,
                                                            @RequestBody AddQuestionToCompetitionRequest addQuestionToCompetitionRequest) {
-        return competitionService.addQuestionToCompetition(competitionId, addQuestionToCompetitionRequest);
+        return competitionService.addQuestionToCompetition(authorizationHeader, competitionId, addQuestionToCompetitionRequest);
     }
 
     @GetMapping("/{competitionId}/questions")
@@ -58,7 +60,8 @@ public class CompetitionController {
     }
 
     @DeleteMapping("/{competitionId}")
-    public ResponseEntity<Object> deleteCompetition(@PathVariable String competitionId) {
-        return competitionService.deleteCompetitionById(competitionId);
+    public ResponseEntity<Object> deleteCompetition(@RequestHeader(value = "Authorization") String authorizationHeader,
+                                                    @PathVariable String competitionId) {
+        return competitionService.deleteCompetitionById(authorizationHeader, competitionId);
     }
 }

@@ -37,7 +37,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<User> getAllUser() {
+    public List<User> getAllUser(String authorizationHeader) {
+        if (!jwtService.isAdmin(authorizationHeader)){
+            throw new RuntimeException("Not Admin");
+        }
+
         return userRepository.findAll();
     }
 
@@ -167,7 +171,11 @@ public class UserService {
         return user.getEvents();
     }
 
-    public ResponseEntity<Object> deleteUserById(String userId) {
+    public ResponseEntity<Object> deleteUserById( String authorizationHeader, String userId) {
+        if (!jwtService.isAdmin(authorizationHeader)){
+            throw new RuntimeException("Not Admin");
+        }
+
         // Retrieve user from the database
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));

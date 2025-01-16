@@ -38,15 +38,9 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> registerEvent(@RequestBody CreateEventRequest createEventRequest) {
-        Event event = new Event(
-                createEventRequest.getName(),
-                createEventRequest.getDate(),
-                createEventRequest.getDescription(),
-                createEventRequest.getCompetitionId()
-        );
-        // Save the user
-        eventService.saveEvent(event);
+    public ResponseEntity<Object> registerEvent(@RequestHeader(value = "Authorization") String authorizationHeader,
+                                                @RequestBody CreateEventRequest createEventRequest) {
+        Event event = eventService.saveEvent(authorizationHeader, createEventRequest);
         return ResponseEntity.ok(event);
     }
 
@@ -60,13 +54,15 @@ public class EventController {
     @PutMapping("/{eventId}/competition")
     public ResponseEntity<Object> linkCompetitionToEvent(
             @PathVariable String eventId,
+            @RequestHeader(value = "Authorization") String authorizationHeader,
             @RequestBody LinkCompetitionRequest linkCompetitionRequest) {
-        Event updatedEvent = eventService.linkCompetition(eventId, linkCompetitionRequest.getTitle());
+        Event updatedEvent = eventService.linkCompetition(authorizationHeader, eventId, linkCompetitionRequest.getTitle());
         return ResponseEntity.ok(updatedEvent);
     }
 
     @DeleteMapping("/{eventId}")
-    public ResponseEntity<Object> deleteEvent(@PathVariable String eventId) {
-        return eventService.deleteEventById(eventId);
+    public ResponseEntity<Object> deleteEvent(@RequestHeader(value = "Authorization") String authorizationHeader,
+                                              @PathVariable String eventId) {
+        return eventService.deleteEventById(authorizationHeader, eventId);
     }
 }
