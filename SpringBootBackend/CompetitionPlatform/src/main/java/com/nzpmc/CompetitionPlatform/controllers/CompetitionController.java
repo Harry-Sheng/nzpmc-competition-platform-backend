@@ -56,4 +56,9 @@ public class CompetitionController {
     public boolean isInCompetitionTime(@RequestBody IsInCompetitionTime isInCompetitionTime) {
         return competitionService.isInCompetitionTime(isInCompetitionTime.getCompetitionId());
     }
+
+    @DeleteMapping("/{competitionId}")
+    public ResponseEntity<Object> deleteCompetition(@PathVariable String competitionId) {
+        return competitionService.deleteCompetitionById(competitionId);
+    }
 }

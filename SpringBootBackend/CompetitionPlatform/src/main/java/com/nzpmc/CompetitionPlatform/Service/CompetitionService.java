@@ -4,6 +4,7 @@ import com.nzpmc.CompetitionPlatform.dto.AddQuestionToCompetitionRequest;
 import com.nzpmc.CompetitionPlatform.dto.CreateCompetitionRequest;
 import com.nzpmc.CompetitionPlatform.dto.CreateQuestionRequest;
 import com.nzpmc.CompetitionPlatform.models.Competition;
+import com.nzpmc.CompetitionPlatform.models.Event;
 import com.nzpmc.CompetitionPlatform.models.Question;
 import com.nzpmc.CompetitionPlatform.repository.CompetitionRepository;
 import com.nzpmc.CompetitionPlatform.repository.QuestionRepository;
@@ -116,5 +117,13 @@ public class CompetitionService {
             return now.isAfter(competition.getStartTime()) && now.isBefore(competition.getEndTime());
         }
         return false;
+    }
+
+    public ResponseEntity<Object> deleteCompetitionById(String competitionId) {
+        // Retrieve competition from the database
+        Competition competition =competitionRepository.findById(competitionId)
+                .orElseThrow(() -> new IllegalArgumentException("Competition not found"));
+        competitionRepository.deleteById(competitionId);
+        return ResponseEntity.ok(competitionId + " is deleted");
     }
 }
