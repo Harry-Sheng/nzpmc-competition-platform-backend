@@ -9,6 +9,7 @@ import com.nzpmc.CompetitionPlatform.models.User;
 import com.nzpmc.CompetitionPlatform.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -166,4 +167,11 @@ public class UserService {
         return user.getEvents();
     }
 
+    public ResponseEntity<Object> deleteUserById(String userId) {
+        // Retrieve user from the database
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        userRepository.deleteById(userId);
+        return ResponseEntity.ok(userId + " is deleted");
+    }
 }

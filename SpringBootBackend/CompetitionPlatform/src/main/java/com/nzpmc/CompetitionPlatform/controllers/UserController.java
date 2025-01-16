@@ -49,4 +49,9 @@ public class UserController {
         List<Event> events = userService.getUserEvents(authorizationHeader);
         return ResponseEntity.ok(events);
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Object> deleteUser(@PathVariable String userId) {
+        return userService.deleteUserById(userId);
+    }
 }
